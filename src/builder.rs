@@ -261,7 +261,9 @@ impl GridBuilder {
         //if self.use_default_spacing { self.spacing = ui.style_mut().spacing.item_spacing;  }
         let allocated_space = ui.available_rect_before_wrap();
         let pure_cells = self.to_real_cells(allocated_space, ui.style().spacing.item_spacing);
-        let mut bounds = Pos2::new(0., 0.);
+        // Start at the grid's own corner, not the screen's origin: a grid scrolled above
+        // the top of the screen (negative y) would otherwise claim the space down to y = 0.
+        let mut bounds = allocated_space.min;
 
         grid(Grid::new(ui, pure_cells, &mut bounds));
 
